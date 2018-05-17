@@ -1,5 +1,6 @@
-package com.eoi.slick.dao
+package com.eoi.slick.dao.impl
 
+import com.eoi.slick.dao.UserDao
 import com.eoi.slick.domain.Protocols.UserInfoEntity
 import com.eoi.slick.util.DatabaseService
 import org.slf4j.LoggerFactory

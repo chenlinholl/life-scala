@@ -5,10 +5,21 @@ import com.eoi.slick.util.DatabaseService
 
 object Protocols {
 
+  /**
+    * 实体对象
+    *
+    * @param id
+    * @param name
+    * @param age
+    * @param address
+    */
   final case class UserInfoEntity(id: Long, name: Option[String] = None, age: Option[Int] = None, address: Option[String] = None)
 
 }
 
+/**
+  * 实体对象表
+  */
 trait EntityTable {
   protected val databaseService: DatabaseService
 

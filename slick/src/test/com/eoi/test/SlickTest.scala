@@ -1,6 +1,6 @@
 package com.eoi.test
 
-import com.eoi.slick.dao.UserInfoDaoImpl
+import com.eoi.slick.dao.impl.UserInfoDaoImpl
 import com.eoi.slick.domain.Protocols.UserInfoEntity
 import com.eoi.slick.util.{IdHelper, JsonUtil}
 import org.junit.Test
