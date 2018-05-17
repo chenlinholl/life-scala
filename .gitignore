@@ -145,7 +145,5 @@ vendor/
 
 .idea/
 
-itoaService/src/main/META-INF/
-dependency-reduced-pom.xml
 
 classes
