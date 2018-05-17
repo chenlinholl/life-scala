@@ -1,6 +1,6 @@
 package com.eoi.slick.dao.impl
 
-import com.eoi.slick.common.ServiceCommon
+import com.eoi.slick.common.{ServiceCommon, StateCode}
 import com.eoi.slick.domain.Protocols.UserInfoEntity
 import com.eoi.slick.util.{DatabaseService, IdHelper}
 import org.slf4j.LoggerFactory
@@ -37,7 +37,7 @@ class UserInfoDaoAkkaImpl extends com.eoi.slick.domain.EntityTable with ServiceC
     db.run(query.asTry).flatMap {
       case Success(s) =>
         log.info("user save success")
-        Future(respSuccess("200", "新增成功!", s))
+        Future(respSuccess(StateCode.CODE_200.getCode, "新增成功!", s))
       case Failure(ex) =>
         log.error("user save db failure")
         Future(respFail("500", ex.getMessage))
