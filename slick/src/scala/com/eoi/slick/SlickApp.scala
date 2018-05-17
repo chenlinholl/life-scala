@@ -21,7 +21,7 @@ object SlickApp {
     Http().bindAndHandle(new UserInfoRoute().route, "0.0.0.0", 10010, log = log)
   }
 
-  implicit def myExceptionHandler: ExceptionHandler =
+  implicit def globalExceptionHandler: ExceptionHandler =
     ExceptionHandler {
       case ex: ArithmeticException =>
         extractUri { uri =>
