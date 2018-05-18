@@ -1,13 +1,13 @@
 package com.eoi.slick.dao.impl
 
-import com.eoi.core.common.BaseService
+import com.eoi.core.common.{BaseService, Page, StateCode}
+import com.eoi.core.util.{IdHelper, JsonParse}
 import com.eoi.slick.domain.Protocols.UserInfoEntity
 import com.eoi.slick.util._
-import com.eoi.core.util.IdHelper
 import org.slf4j.LoggerFactory
 
 import scala.concurrent.Future
-import scala.util.{Failure, Success}
+import scala.util._
 
 
 class UserInfoDaoAkkaImpl extends com.eoi.slick.domain.EntityTable with BaseService {
@@ -32,15 +32,15 @@ class UserInfoDaoAkkaImpl extends com.eoi.slick.domain.EntityTable with BaseServ
     val u = UserInfoEntity(IdHelper.id(), user.name, user.age, user.address)
 
     val query = for {
-      a <- userInfos += u
+      _ <- userInfos += u
     } yield u
 
     db.run(query.asTry).flatMap {
       case Success(s) =>
-        log.info("user save success")
+        log.info(" save user success")
         Future(success("200", "新增成功!", s))
       case Failure(ex) =>
-        log.error("user save db failure")
+        log.error("保存用户信息失败")
         Future(failure("500", ex.getMessage))
     }
   }
@@ -53,10 +53,18 @@ class UserInfoDaoAkkaImpl extends com.eoi.slick.domain.EntityTable with BaseServ
   def list(): Future[Map[String, Any]] = {
     db.run(userInfos.result).flatMap {
       res =>
-        log.info("查询列表")
+        log.info("查询列表:{}", JsonParse.toJson(res))
         Future(success("200", "查询成功!", res))
     }
+  }
 
+
+  def page(page: Page): Future[Map[String, Any]] = {
+    db.run(userInfos.sortBy(_.id.desc).drop(page.pageNo).take(page.pageSize).result).flatMap {
+      res =>
+        log.info("分页查询数据:{}", JsonParse.toJson(res))
+        Future(success(StateCode.CODE_200, res))
+    }
   }
 
   /**
@@ -97,7 +105,7 @@ class UserInfoDaoAkkaImpl extends com.eoi.slick.domain.EntityTable with BaseServ
     */
   def updateById(id: Long, u: UserInfoEntity): Future[Map[String, Any]] = {
     val query = for {
-      u <- userInfos.filter(_.id === id)
+      _ <- userInfos.filter(_.id === id)
         .map(s => (s.name, s.age, s.address))
         .update((u.name, u.age, u.address))
       s <- userInfos.filter(_.id === id).result.headOption

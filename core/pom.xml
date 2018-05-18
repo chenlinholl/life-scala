@@ -11,8 +11,28 @@
 
     <artifactId>core</artifactId>
 
+    <properties>
+        <akka.version>2.5.12</akka.version>
+        <akka-http.version>10.1.1</akka-http.version>
+        <kafka.version>0.10.2.1</kafka.version>
+        <slick.version>3.2.3</slick.version>
+        <slickless.version>0.3.2</slickless.version>
+    </properties>
+
 
     <dependencies>
+
+        <!-- slick -->
+        <dependency>
+            <groupId>com.typesafe.slick</groupId>
+            <artifactId>slick_${scala.binary.version}</artifactId>
+            <version>${slick.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.underscore</groupId>
+            <artifactId>slickless_${scala.binary.version}</artifactId>
+            <version>${slickless.version}</version>
+        </dependency>
 
         <!-- https://mvnrepository.com/artifact/com.typesafe.akka/akka-http_2.11 -->
         <dependency>

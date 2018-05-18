@@ -1,6 +1,5 @@
 package generator
 
-
 import java.net.URI
 
 import slick.basic.DatabaseConfig

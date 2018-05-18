@@ -12,7 +12,7 @@ import com.fasterxml.jackson.module.scala.experimental.ScalaObjectMapper
 import scala.reflect.ClassTag
 
 
-object JsonUtil extends JacksonSupport {
+object JsonParse extends JacksonSupport {
   val defaultObjectMapper = new ObjectMapper() with ScalaObjectMapper
   defaultObjectMapper.registerModule(DefaultScalaModule)
   defaultObjectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
@@ -29,7 +29,7 @@ object JsonUtil extends JacksonSupport {
 
 trait JacksonSupport {
 
-  import JsonUtil._
+  import JsonParse._
 
   private val jsonStringUnmarshaller =
     Unmarshaller.byteStringUnmarshaller

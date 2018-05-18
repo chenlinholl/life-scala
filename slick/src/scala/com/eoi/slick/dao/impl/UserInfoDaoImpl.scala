@@ -3,11 +3,11 @@ package com.eoi.slick.dao.impl
 import com.eoi.slick.dao.UserDao
 import com.eoi.slick.domain.Protocols.UserInfoEntity
 import com.eoi.slick.util.DatabaseService
+import lombok.extern.slf4j.Slf4j
 import org.slf4j.LoggerFactory
 
 import scala.concurrent.duration.Duration
 import scala.concurrent.{Await, Future}
-
 
 class UserInfoDaoImpl extends com.eoi.slick.domain.EntityTable with UserDao {
 
@@ -45,6 +45,21 @@ class UserInfoDaoImpl extends com.eoi.slick.domain.EntityTable with UserDao {
     */
   override def list(): Future[Seq[UserInfoEntity]] = {
     val res = db.run(userInfos.result)
+    // 等待异步任务处理完成
+    Await.result(res, Duration.Inf)
+    res
+  }
+
+  /**
+    * 分页查询数据
+    *
+    * @param pageNo
+    * @param pageSize
+    * @return
+    */
+  def page(pageNo: Int, pageSize: Int): Future[Seq[UserInfoEntity]] = {
+    // 倒序排
+    val res = db.run(userInfos.sortBy(_.id.desc).drop(pageNo).take(pageSize).result)
     // 等待异步任务处理完成
     Await.result(res, Duration.Inf)
     res

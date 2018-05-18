@@ -2,7 +2,7 @@ package com.eoi.test
 
 import com.eoi.slick.dao.impl.UserInfoDaoImpl
 import com.eoi.slick.domain.Protocols.UserInfoEntity
-import com.eoi.core.util.{IdHelper, JsonUtil}
+import com.eoi.core.util.{IdHelper, JsonParse}
 import org.junit.Test
 import org.slf4j.LoggerFactory
 
@@ -18,7 +18,7 @@ class SlickTest {
   def test(): Unit = {
     val user = UserInfoEntity(IdHelper.id(), Some("张三_" + IdHelper.uuid()), Some(18), Some("浦东新区_" + IdHelper.uuid()));
     val u = userDao.save(user)
-    val aaa = JsonUtil.toJson(u)
+    val aaa = JsonParse.toJson(u)
     log.info("json:{}", aaa)
     log.debug("操作结果:{}", u)
   }
@@ -26,7 +26,7 @@ class SlickTest {
   @Test
   def test1(): Unit = {
     val json = "{\"id\":177355311017984,\"name\":\"张三\",\"age\":18,\"address\":\"浦东新区\"}";
-    val u = JsonUtil.fromJson[UserInfoEntity](json)
+    val u = JsonParse.fromJson[UserInfoEntity](json)
     log.info("{}", u)
   }
 
@@ -35,7 +35,7 @@ class SlickTest {
   def test2(): Unit = {
     var i = 0
     userDao.list().foreach(user => {
-      log.info("下标:{},数据:{}", i, JsonUtil.toJson(user))
+      log.info("下标:{},数据:{}", i, JsonParse.toJson(user))
       i = i + 1
     })
   }
@@ -43,7 +43,7 @@ class SlickTest {
   @Test
   def test3(): Unit = {
     val res = userDao.findById(177404856336384L)
-    log.info("按照ID查询数据结果:{}", JsonUtil.toJson(res))
+    log.info("按照ID查询数据结果:{}", JsonParse.toJson(res))
   }
 
   @Test
@@ -56,6 +56,15 @@ class SlickTest {
   def test5(): Unit = {
     val user = UserInfoEntity(177405865074688L, Some("小花啊"), Some(18), Some("广兰路"))
     val res = userDao.updateById(177405865074688L, user)
-    log.info("修改结果:{}", JsonUtil.toJson(res))
+    log.info("修改结果:{}", JsonParse.toJson(res))
   }
+
+  @Test
+  def test6(): Unit = {
+
+    val res = userDao.page(2, 4)
+
+    log.info("分页查询数据:{}", JsonParse.toJson(res))
+  }
+
 }

@@ -3,10 +3,11 @@ package com.eoi.test
 import generator.SourceCodeGenerator
 import org.junit.Test
 
+
 class GeneratorCode {
 
 
-  @SlickTest
+  @Test
   def generator(): Unit = {
 
     val as = Array[String](
@@ -19,7 +20,7 @@ class GeneratorCode {
       // 生产代码位置
       "generator_code/",
       // 生成的包名
-      "com.eoi.slick",
+      "com.eoi.slick.domain",
       // 用户名密码
       "root", "User@123")
 

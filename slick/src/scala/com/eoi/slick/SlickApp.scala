@@ -5,12 +5,11 @@ import akka.http.scaladsl.Http
 import akka.http.scaladsl.model.HttpResponse
 import akka.http.scaladsl.model.StatusCodes._
 import akka.http.scaladsl.server.Directives._
-import akka.http.scaladsl.server.ExceptionHandler
+import akka.http.scaladsl.server.{ExceptionHandler, Route}
 import com.eoi.core.common.HttpNullException
-import com.eoi.slick.routes.UserInfoRoute
+import com.eoi.slick.routes.{DeptRoute, UserInfoRoute}
 
 object SlickApp {
-
 
   import com.eoi.core.util.ExecutorService.{mat, system}
 
@@ -18,9 +17,24 @@ object SlickApp {
 
 
   def main(args: Array[String]): Unit = {
-    Http().bindAndHandle(new UserInfoRoute().route, "0.0.0.0", 10010, log = log)
+    // 启动服务器，设置启动端口
+    Http().bindAndHandle(route(), "0.0.0.0", 10010, log = log)
   }
 
+  /**
+    * 路由集合
+    *
+    * @return
+    */
+  def route(): Route = {
+    new UserInfoRoute().route ~ new DeptRoute().route
+  }
+
+  /**
+    * 全局异常处理
+    *
+    * @return
+    */
   implicit def globalExceptionHandler: ExceptionHandler =
     ExceptionHandler {
       case ex: ArithmeticException =>
