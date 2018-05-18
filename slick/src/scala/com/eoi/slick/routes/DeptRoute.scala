@@ -12,7 +12,7 @@ class DeptRoute {
   val route: Route = pathPrefix("api") {
     path("dept") {
       get {
-        complete(deptDao.join())
+        complete(deptDao.leftJoin())
       }
     }
   }

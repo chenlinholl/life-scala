@@ -59,11 +59,20 @@ class UserInfoDaoAkkaImpl extends com.eoi.slick.domain.EntityTable with BaseServ
   }
 
 
+  /**
+    * 分页查询列表
+    *
+    * @param page
+    * @return
+    */
   def page(page: Page): Future[Map[String, Any]] = {
     db.run(userInfos.sortBy(_.id.desc).drop(page.pageNo).take(page.pageSize).result).flatMap {
       res =>
         log.info("分页查询数据:{}", JsonParse.toJson(res))
-        Future(success(StateCode.CODE_200, res))
+        val result = {
+          Map("total" -> res.length, "current" -> page.pageNo, "pageSize" -> page.pageSize, "data" -> res)
+        }
+        Future(success(StateCode.CODE_200, result))
     }
   }
 
