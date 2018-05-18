@@ -33,11 +33,10 @@ class SlickTest {
 
   @Test
   def test2(): Unit = {
-    var i = 0
-    userDao.list().foreach(user => {
-      log.info("下标:{},数据:{}", i, JsonParse.toJson(user))
-      i = i + 1
-    })
+
+    for (x <- userDao.list()) {
+      log.info("用户信息:{}", x.map(_.name))
+    }
   }
 
   @Test
