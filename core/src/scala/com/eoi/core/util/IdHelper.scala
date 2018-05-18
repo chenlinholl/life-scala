@@ -1,4 +1,4 @@
-package com.eoi.slick.util
+package com.eoi.core.util
 
 import java.util.UUID
 

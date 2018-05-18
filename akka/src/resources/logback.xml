@@ -1,23 +1,69 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration scan="true" scanPeriod="60 seconds" debug="false">
     <property name="LOG_HOME" value="logs"/>
-    <appender name="FILE"
-              class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <encoder>
-            <pattern>%date{ISO8601} [%thread] %-5level [itoaService] [%logger{100}] [%file:%line] - %msg%n</pattern>
-        </encoder>
+    <property name="appName" value="akka"/>
 
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} TKD [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="file_debug" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_HOME}/${appName}.debug.log</file>
+        <encoder>
+            <pattern>%date{ISO8601} [%thread] %-5level [${appName}] [%logger{50}] [%file:%line] - %msg%n</pattern>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>DEBUG</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-            <fileNamePattern>${LOG_HOME}\test.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <fileNamePattern>${LOG_HOME}/${appName}.debug.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
             <maxFileSize>50MB</maxFileSize>
             <maxHistory>10</maxHistory>
-            <totalSizeCap>5GB</totalSizeCap>
+            <totalSizeCap>500MB</totalSizeCap>
         </rollingPolicy>
     </appender>
-    <appender name="file-error"
-              class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <appender name="file_info" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_HOME}/${appName}.log</file>
         <encoder>
-            <pattern>%date{ISO8601} [%thread] %-5level [itoaService] [%logger{100}] [%file:%line] - %msg%n</pattern>
+            <pattern>%date{ISO8601} [%thread] %-5level [${appName}] [%logger{50}] [%file:%line] - %msg%n</pattern>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>INFO</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_HOME}/${appName}.info.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <maxFileSize>50MB</maxFileSize>
+            <maxHistory>30</maxHistory>
+            <totalSizeCap>2GB</totalSizeCap>
+        </rollingPolicy>
+    </appender>
+    <appender name="file_warn" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_HOME}/${appName}.warn.log</file>
+        <encoder>
+            <pattern>%date{ISO8601} [%thread] %-5level [${appName}] [%logger{100}] [%file:%line] - %msg%n</pattern>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>WARN</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_HOME}/${appName}.warn.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <maxFileSize>50MB</maxFileSize>
+            <maxHistory>60</maxHistory>
+            <totalSizeCap>3GB</totalSizeCap>
+        </rollingPolicy>
+    </appender>
+    <appender name="file_error" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_HOME}/${appName}.error.log</file>
+        <encoder>
+            <pattern>%date{ISO8601} [%thread] %-5level [${appName}] [%logger{100}] [%file:%line] - %msg%n</pattern>
         </encoder>
         <filter class="ch.qos.logback.classic.filter.LevelFilter">
             <level>ERROR</level>
@@ -25,21 +71,28 @@
             <onMismatch>DENY</onMismatch>
         </filter>
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-            <fileNamePattern>${LOG_HOME}\test.error.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <fileNamePattern>${LOG_HOME}/${appName}.error.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
             <maxFileSize>50MB</maxFileSize>
-            <maxHistory>10</maxHistory>
-            <totalSizeCap>10GB</totalSizeCap>
+            <maxHistory>60</maxHistory>
+            <totalSizeCap>3GB</totalSizeCap>
         </rollingPolicy>
     </appender>
-    <logger name="logger.org.jdbcdslog.StatementLogger" level="WARNING"/>
-    <logger name="LogbackIntegrationIT" additivity="false" level="WARNING"/>
-    <logger name="application" level="INFO"/>
-    <logger name="com.zaxxer.hikari" level="ERROR"/>
+    <!-- level Options: ERROR, WARN, INFO, DEBUG -->
+    <logger name="logger.org.jdbcdslog.StatementLogger" level="DEBUG"/>
+    <logger name="LogbackIntegrationIT" additivity="false" level="DEBUG"/>
+    <logger name="application" level="DEBUG"/>
+    <logger name="com.zaxxer.hikari" level="DEBUG"/>
+    <logger name="org.apache.kafka.clients.consumer.ConsumerConfig" level="DEBUG"/>
+    <logger name="org.apache.kafka.clients.producer.ProducerConfig" level="DEBUG"/>
     <logger name="slick.jdbc.JdbcBackend.statement" level="DEBUG"/>
-    <logger name="slick.jdbc.StatementInvoker.result" level="DEBUG"/>
-    <logger name="akka.event.slf4j.Slf4jLogger" level="INFO"/>
+    <logger name="akka.event.slf4j.Slf4jEventHandler" level="DEBUG"/>
+
+    <!-- Options: ERROR, WARN, INFO, DEBUG -->
     <root level="DEBUG">
-        <appender-ref ref="FILE"/>
-        <appender-ref ref="file-error"/>
+        <appender-ref ref="file_debug"/>
+        <appender-ref ref="file_info"/>
+        <appender-ref ref="file_warn"/>
+        <appender-ref ref="file_error"/>
+        <appender-ref ref="STDOUT"/>
     </root>
 </configuration>

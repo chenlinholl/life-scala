@@ -1,6 +1,6 @@
-package com.eoi.slick.util
+package com.eoi.core.util
 
-import java.util.concurrent.{ExecutorService, Executors}
+import java.util.concurrent._
 
 import akka.actor.ActorSystem
 import akka.stream.ActorMaterializer

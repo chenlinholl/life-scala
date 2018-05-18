@@ -1,4 +1,4 @@
-package com.eoi.slick.util
+package com.eoi.core.util
 
 import akka.http.javadsl.marshallers.jackson.Jackson
 import akka.http.scaladsl.marshalling._

@@ -1,4 +1,4 @@
-package com.eoi.slick.util
+package com.eoi.core.util
 
 object Snowflake {
   private val idGenerator = new SnowflakeIdGenerator(0) //, snowflake.datacenter_id().get)

@@ -6,13 +6,13 @@ import akka.http.scaladsl.model.HttpResponse
 import akka.http.scaladsl.model.StatusCodes._
 import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server.ExceptionHandler
-import com.eoi.slick.common.HttpNullException
+import com.eoi.core.common.HttpNullException
 import com.eoi.slick.routes.UserInfoRoute
 
 object SlickApp {
 
 
-  import com.eoi.slick.util.ExecutorService.{mat, system}
+  import com.eoi.core.util.ExecutorService.{mat, system}
 
   implicit val log: LoggingAdapter = Logging(system, getClass)
 

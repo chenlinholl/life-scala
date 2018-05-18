@@ -1,4 +1,5 @@
-package com.eoi.slick.common;
+package com.eoi.core.common;
+
 
 import lombok.Getter;
 
@@ -8,7 +9,7 @@ import lombok.Getter;
 @Getter
 public enum StateCode {
 
-    CODE_200("200", "成功"), CODE_500("500", "失败");
+    CODE_200("200", "成功!"), CODE_500("500", "失败!");
 
     String code;
     String message;

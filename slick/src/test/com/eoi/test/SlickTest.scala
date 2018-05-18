@@ -2,7 +2,7 @@ package com.eoi.test
 
 import com.eoi.slick.dao.impl.UserInfoDaoImpl
 import com.eoi.slick.domain.Protocols.UserInfoEntity
-import com.eoi.slick.util.{IdHelper, JsonUtil}
+import com.eoi.core.util.{IdHelper, JsonUtil}
 import org.junit.Test
 import org.slf4j.LoggerFactory
 

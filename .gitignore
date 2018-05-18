@@ -26,5 +26,6 @@
 
 *.DS_Store
 
-slick/target/
-akka/target/
+*/target/
+
+logs

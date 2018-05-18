@@ -4,7 +4,7 @@ import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server.Route
 import com.eoi.slick.dao.impl._
 import com.eoi.slick.domain.Protocols.UserInfoEntity
-import com.eoi.slick.util.JsonUtil._
+import com.eoi.core.util.JsonUtil._
 
 /**
   * 路由控制器 类似于spring mvc 中的controller

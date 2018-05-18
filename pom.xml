@@ -11,6 +11,7 @@
     <modules>
         <module>slick</module>
         <module>akka</module>
+        <module>core</module>
     </modules>
 
     <properties>
@@ -72,6 +73,13 @@
         </dependency>
 
         <!-- log -->
+        <!-- https://mvnrepository.com/artifact/com.typesafe.scala-logging/scala-logging -->
+        <dependency>
+            <groupId>com.typesafe.scala-logging</groupId>
+            <artifactId>scala-logging_2.12</artifactId>
+            <version>3.6.0</version>
+        </dependency>
+
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>

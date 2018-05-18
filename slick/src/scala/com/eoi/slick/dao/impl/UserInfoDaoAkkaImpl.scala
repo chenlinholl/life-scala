@@ -1,15 +1,16 @@
 package com.eoi.slick.dao.impl
 
-import com.eoi.slick.common.{ServiceCommon, StateCode}
+import com.eoi.core.common.BaseService
 import com.eoi.slick.domain.Protocols.UserInfoEntity
-import com.eoi.slick.util.{DatabaseService, IdHelper}
+import com.eoi.slick.util._
+import com.eoi.core.util.IdHelper
 import org.slf4j.LoggerFactory
 
 import scala.concurrent.Future
 import scala.util.{Failure, Success}
 
 
-class UserInfoDaoAkkaImpl extends com.eoi.slick.domain.EntityTable with ServiceCommon {
+class UserInfoDaoAkkaImpl extends com.eoi.slick.domain.EntityTable with BaseService {
 
   private val log = LoggerFactory.getLogger(getClass)
 
@@ -37,10 +38,10 @@ class UserInfoDaoAkkaImpl extends com.eoi.slick.domain.EntityTable with ServiceC
     db.run(query.asTry).flatMap {
       case Success(s) =>
         log.info("user save success")
-        Future(respSuccess(StateCode.CODE_200.getCode, "新增成功!", s))
+        Future(success("200", "新增成功!", s))
       case Failure(ex) =>
         log.error("user save db failure")
-        Future(respFail("500", ex.getMessage))
+        Future(failure("500", ex.getMessage))
     }
   }
 
@@ -53,7 +54,7 @@ class UserInfoDaoAkkaImpl extends com.eoi.slick.domain.EntityTable with ServiceC
     db.run(userInfos.result).flatMap {
       res =>
         log.info("查询列表")
-        Future(respSuccess("200", "查询成功!", res))
+        Future(success("200", "查询成功!", res))
     }
 
   }
@@ -66,7 +67,7 @@ class UserInfoDaoAkkaImpl extends com.eoi.slick.domain.EntityTable with ServiceC
   def findById(id: Long): Future[Map[String, Any]] = {
     db.run(userInfos.filter(_.id === id).result.headOption).flatMap {
       res =>
-        Future(respSuccess("200", "按照ID查询数据", res))
+        Future(success("200", "按照ID查询数据", res))
     }
   }
 
@@ -79,11 +80,11 @@ class UserInfoDaoAkkaImpl extends com.eoi.slick.domain.EntityTable with ServiceC
     db.run(userInfos.filter(_.id === id).delete.asTry).flatMap {
       case Success(res) => {
         log.info("删除操作，ID={}", id)
-        Future(respSuccess("200", "删除成功", res))
+        Future(success("200", "删除成功", res))
       }
       case Failure(ex) => {
         log.error("删除失败!")
-        Future(respFail("500", ex.getMessage))
+        Future(failure("500", ex.getMessage))
       }
     }
   }
@@ -105,11 +106,11 @@ class UserInfoDaoAkkaImpl extends com.eoi.slick.domain.EntityTable with ServiceC
     db.run(query.asTry).flatMap {
       case Success(res) => {
         log.info("修改成功")
-        Future(respSuccess("200", "修改成功", res))
+        Future(success("200", "修改成功", res))
       }
       case Failure(ex) => {
         log.error("修改失败!")
-        Future(respFail("500", ex.getMessage))
+        Future(failure("500", ex.getMessage))
       }
     }
   }
