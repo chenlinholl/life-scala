@@ -1,7 +1,7 @@
 package com.eoi.slick.dao.impl
 
 import com.eoi.core.common.{BaseService, Page, StateCode}
-import com.eoi.core.util.{IdHelper, JsonParse}
+import com.eoi.core.util.IdHelper
 import com.eoi.slick.domain.Protocols.UserInfoEntity
 import com.eoi.slick.util._
 import org.slf4j.LoggerFactory
@@ -53,7 +53,6 @@ class UserInfoDaoAkkaImpl extends com.eoi.slick.domain.EntityTable with BaseServ
   def list(): Future[Map[String, Any]] = {
     db.run(userInfos.result).flatMap {
       res =>
-        log.info("查询列表:{}", JsonParse.toJson(res))
         Future(success("200", "查询成功!", res))
     }
   }
@@ -66,9 +65,13 @@ class UserInfoDaoAkkaImpl extends com.eoi.slick.domain.EntityTable with BaseServ
     * @return
     */
   def page(page: Page): Future[Map[String, Any]] = {
+
+    val count = for {
+      a <- userInfos.drop(page.pageNo).take(page.pageSize).result
+    } yield a.length
+
     db.run(userInfos.sortBy(_.id.desc).drop(page.pageNo).take(page.pageSize).result).flatMap {
       res =>
-        log.info("分页查询数据:{}", JsonParse.toJson(res))
         val result = {
           Map("total" -> res.length, "current" -> page.pageNo, "pageSize" -> page.pageSize, "data" -> res)
         }

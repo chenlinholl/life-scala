@@ -78,4 +78,49 @@ class DeptDaoImpl extends EntityTable with BaseService {
       }
     }
   }
+
+  /**
+    * 基于交叉连接或外部连接
+    *
+    * @return
+    */
+  def zipQueryJoin(): Future[Map[String, Any]] = {
+    val zipQuery = for {
+      (emp, dept) <- employees.zip(depts)
+    } yield (emp.deptId, emp.name, dept.deptName)
+
+    db.run(zipQuery.result).flatMap {
+      res => {
+        Future(success(StateCode.CODE_200, res))
+      }
+    }
+  }
+
+  /**
+    *
+    * @return
+    */
+  def zipWithIndexJoin(): Future[Map[String, Any]] = {
+    val zipWithIndexJoin = for {
+      (emp, dept) <- employees.zip(depts)
+    } yield (emp.deptId, emp.name, dept.deptName)
+
+    db.run(zipWithIndexJoin.result).flatMap {
+      res => {
+        Future(success(StateCode.CODE_200, res))
+      }
+    }
+  }
+
+  def delete(id: Long): Option[String] = {
+
+    val q = employees.filter(_.id === id)
+    val action = q.delete
+    db.run(action)
+
+    action.statements.headOption
+  }
+
+  def save(): Unit = {
+  }
 }
