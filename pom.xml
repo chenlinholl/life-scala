@@ -12,6 +12,7 @@
         <module>slick</module>
         <module>akka</module>
         <module>core</module>
+        <module>actor</module>
     </modules>
 
     <properties>
