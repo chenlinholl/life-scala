@@ -1,5 +1,6 @@
 package com.eoi.slick.util
 
+import com.eoi.slick.config.DataBaseConfig
 import com.zaxxer.hikari.{HikariConfig, HikariDataSource}
 import org.slf4j.LoggerFactory
 
@@ -10,15 +11,19 @@ class DatabaseService {
 
   import driver.api._
 
+  val database = DataBaseConfig.apply()
   private val hikariConfig = new HikariConfig()
-  val jdbcUrl = "jdbc:mysql://192.168.31.46:3306/zt_test?useUnicode=true&characterEncoding=UTF-8&useSSL=false"
-  val dbUser = "root"
-  val dbPassword = "User@123"
+  private val jdbcUrl = database.drives().getOrElse("jdbc:mysql://192.168.0.116:10100/zt_test?useUnicode=true&characterEncoding=UTF-8&useSSL=false")
+  private val dbUser = database.user().getOrElse("root")
+  private val dbPassword = database.password().getOrElse("root")
+  private val timeOut = database.maxConnections().getOrElse(20)
 
+  hikariConfig.setDriverClassName("com.mysql.jdbc.Driver")
   hikariConfig.setJdbcUrl(jdbcUrl)
   hikariConfig.setUsername(dbUser)
   hikariConfig.setPassword(dbPassword)
   hikariConfig.setConnectionTimeout(3000)
+  hikariConfig.setMaximumPoolSize(timeOut)
 
   var dataSource: HikariDataSource = _
   try {

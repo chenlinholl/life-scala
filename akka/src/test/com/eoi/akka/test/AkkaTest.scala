@@ -31,18 +31,56 @@ class AkkaTest {
     import scala.util.control.Breaks._
     val list = 1.to(50).toList
 
-    val map = Map(0 -> "123")
-
     for (i <- list) {
       if (i == 4) {
         log.debug("i=>{}", i)
         try {
           break
         } catch {
-          case e: Throwable => log.error(s"error ->:${e}")
+          case e: Throwable => log.error(s"throwable ->:${e}")
         }
       }
       log.info("i=>{}", i)
     }
   }
+
+  @Test
+  def test2(): Unit = {
+    val map = Map(0 -> "123")
+    log.info("{}", map.apply(0))
+  }
+
+  @Test
+  def test3(): Unit = {
+
+    val customer = Customer(20)
+    try {
+      val cig = buyCigarettes(customer)
+      cig.test()
+    } catch {
+      case UnderAgeException(message) => log.error(message)
+    }
+  }
+
+  @Test
+  def test4(): Unit = {
+    val list = 2.to(20).toList
+    log.info(s"${list.headOption.getOrElse(-1)}")
+  }
+
+
+  case class Customer(age: Int)
+
+  class Cigarettes {
+    def test(): Unit = {
+      log.info("hello world!!!")
+    }
+  }
+
+  case class UnderAgeException(message: String) extends Exception(message)
+
+  def buyCigarettes(customer: Customer): Cigarettes =
+    if (customer.age < 16)
+      throw UnderAgeException(s"Customer must be older than 16 but was ${customer.age}")
+    else new Cigarettes
 }
