@@ -161,7 +161,7 @@
                     <dateFormatTimeZone>UTC</dateFormatTimeZone>
                     <generateGitPropertiesFile>true</generateGitPropertiesFile>
                     <dotGitDirectory>${project.basedir}/../.git</dotGitDirectory>
-                    <generateGitPropertiesFilename>./src/resources/gitinfo.properties</generateGitPropertiesFilename>
+                    <generateGitPropertiesFilename>./src/main/resources/gitinfo.properties</generateGitPropertiesFilename>
                     <verbose>true</verbose>
                 </configuration>
             </plugin>

@@ -36,6 +36,8 @@ object AkkaApp {
     actor.!("hello")
     actor.!(Message(200, "获取系统时间", new Date))
 
+    //    Thread.sleep(2 * 1000)
+    //    System.exit(0)
   }
 
   class HelloActor extends Actor {
